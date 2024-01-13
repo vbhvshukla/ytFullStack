@@ -7,3 +7,5 @@ Model's Link followed throughtout the project : https://app.eraser.io/workspace/
 3) Install Dev Dependency Nodemon (npm i -D nodemon)
 4) Add a script dev in package.json
 5) Add a npm package "Prettier" and add files (.prettierrc,.prettierignore(env,envsample etc))
+6) Used MongoDB atlas to create a DB and add allow connections from anywhere ("0.0.0.0/0")
+7) Establish DB index.js and put informations.
