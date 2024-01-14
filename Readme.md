@@ -14,4 +14,4 @@ Model's Link followed throughtout the project : https://app.eraser.io/workspace/
 10) Import these packages in app.js
 11) Configure Cors in app.js and .env.
 12) Make a try catch utility asyncHandler (to handle async await try catch).
-13) To make sending errors and json as a standard method we take use of Nodejs's error class (utils->ApiError).
+13) To make sending errors and json as a standard method we take use of Nodejs's error class (utils->ApiError and ApiResponse.js).
