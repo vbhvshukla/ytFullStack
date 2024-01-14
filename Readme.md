@@ -24,4 +24,4 @@ Model's Link followed throughtout the project : https://app.eraser.io/workspace/
 20. Add utils/cloudinary to env variables.
 21. Added Multer(fileuploader) middleware
 22. Make controllers first being user.
-23. Make user route and import in app.js
+23. Make user route in routes and import in app.js

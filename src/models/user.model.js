@@ -54,7 +54,7 @@ const userSchema = new mongoose.Schema(
 userSchema.pre("save", async function (next) {
   //modified is inbuilt
   if (!this.isModified("password")) return next();
-  this.password = bcrypt.hash(this.password, 10); // 10 rounds
+  this.password = await bcrypt.hash(this.password, 10); // 10 rounds
   next(); //whenever password get saved again new hashing takes place optimize it to only encrypt when password is new or modified in if statement.
 });
 
