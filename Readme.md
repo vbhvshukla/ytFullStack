@@ -15,3 +15,8 @@ Model's Link followed throughtout the project : https://app.eraser.io/workspace/
 11) Configure Cors in app.js and .env.
 12) Make a try catch utility asyncHandler (to handle async await try catch).
 13) To make sending errors and json as a standard method we take use of Nodejs's error class (utils->ApiError and ApiResponse.js).
+14) Make model user and video in models.
+15) Install a package mongoose aggregate paginate v2(used in video model) and bcryptjs
+16) Added jsonwebtoken 
+17) As soon as the data is going to be saved in database, we can run pre hook of mongoose (encrypt password). (In user.model.js Prehook)
+18) Install jsonwebtoken , Make Access/Refresh Token Secret in ENV
