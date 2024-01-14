@@ -3,13 +3,14 @@
 //Approach 2
 
 const asyncHandler = (requestHandler) => {
-  (req, res, next) => {
+  return (req, res, next) => {
     Promise.resolve(requestHandler(req, res, next)).catch((err) => {
       console.log("Error Async Handler : ",err);
     });
   };
 };
 
+export {asyncHandler}
 //Approach 1 higher order function passing a function in a function
 // const asyncHandler = (function) => async (req,res,next) => {
 //     try {

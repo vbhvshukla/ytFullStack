@@ -41,4 +41,11 @@ app.on("error", (error) => {
   throw error;
 });
 
+//Routes
+import userRouter from "./routes/user.routes.js";
+
+// Routes Declaration
+// app.use("/users",userRouter) usual practice below is the industry standard.
+app.use("/api/v1/users", userRouter); //passing the control to the user.route.js
+
 export { app };
