@@ -18,10 +18,15 @@ Model's Link followed throughtout the project : https://app.eraser.io/workspace/
 14. Make model user and video in models.
 15. Install a package mongoose aggregate paginate v2(used in video model) and bcryptjs
 16. Added jsonwebtoken
-17. As soon as the data is going to be saved in database, we can run pre hook of mongoose (encrypt password). (In user.model.js Prehook)
+17. As soon as the data is going to be saved in database, we can run pre hook of mongoose (encrypt password). (In user.model.js Prehook) (comparePassword method in user.model.js)
 18. Install jsonwebtoken , Make Access/Refresh Token Secret in ENV
 19. File upload (utility / cloudnary or fileupload) using Cloudinary and Multer(install)
 20. Add utils/cloudinary to env variables.
 21. Added Multer(fileuploader) middleware
 22. Make controllers first being user.
 23. Make user route in routes and import in app.js
+24. In user.controller.js Create userRegister using asynchandler , take avatar localfilepath using req.files upload files on cloudinary.
+25. Create user from User schema (User.create) and send the response as return res.json(userCreated);
+26. In cloudinary.js in utils we added fs.unlink to delete file from temp after successfully getting uploaded as well as upon failing.
+27. Added generateToken , generateRefreshToken in user.model.js
+28.
