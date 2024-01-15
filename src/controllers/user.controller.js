@@ -18,8 +18,9 @@ const registerUser = asyncHandler(async (req, res) => {
         8) Check for user creation.
         9) Return response if user created else send null.
    */
-  const { fullName, email, username, password } = req.body;
-  console.log(fullName, email, username, password);
+        console.log(req.body);
+  const { fullName, email, username, password } = req.body; //Destructure the req
+  console.log(req.files);
   //Validation to check if any field is empty
   if (
     [fullName, email, username, password].some((field) => field?.trim() === "")
@@ -31,7 +32,7 @@ const registerUser = asyncHandler(async (req, res) => {
   //   } //one way to check validation
 
   //Check if user already exists by email or username
-  const existedUser = User.findOne({
+  const existedUser = await User.findOne({
     $or: [{ email }, { username }],
   });
 
@@ -39,10 +40,16 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new ApiError(409, "User with same email or username already exists!");
   }
 
-  // Image handling
+  //Image handling
   //Multer gives us req.files
-  const avatarLocalPath = req.files?.avatar[0]?.path;
-  const coverImageLocalPath = req.files?.coverImage[0]?.path;
+  const avatarLocalPath = req.files?.avatar[0]?.path; //Req.files.avatar is an array of object which contains fil details
+  //const coverImageLocalPath = req.files?.coverImage[0]?.path; // declared if below
+
+  let coverImageLocalPath;
+  //Check if coverImageLocalPath exists.
+  if(req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length > 0){
+    coverImageLocalPath = req.files.coverImage[0].path
+  }
 
   if (!avatarLocalPath) {
     throw new ApiError(400, "Avatar is required!");
@@ -54,7 +61,7 @@ const registerUser = asyncHandler(async (req, res) => {
   if (!avatar) {
     throw new ApiError(400, "Avatar is not found on Cloudinary!");
   }
-  //Entry in DB
+  // Entry in DB
   const user = await User.create({
     fullName,
     avatar: avatar.url,
