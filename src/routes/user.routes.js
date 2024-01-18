@@ -1,10 +1,16 @@
 import { Router } from "express";
-import { registerUser } from "../controllers/user.controller.js";
+import {
+  loginUser,
+  logoutUser,
+  registerUser,
+} from "../controllers/user.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
+import { verifyJWT } from "../middlewares/auth.middleware.js";
 const router = Router();
 
 router.route("/register").post(
-  upload.fields([ //this is middleware used before calling registerUser
+  upload.fields([
+    //this is middleware used before calling registerUser
     {
       name: "avatar",
       maxCount: 1,
@@ -16,5 +22,11 @@ router.route("/register").post(
   ]),
   registerUser
 ); //calls this function registerUser
+
+router.route("/login").post(loginUser);
+
+//Secured Routes
+
+router.route("/logout").post(verifyJWT ,logoutUser); //we wrote next() in auth.middleware.js so we can use verifyJWT before executing logoutUser
 
 export default router;

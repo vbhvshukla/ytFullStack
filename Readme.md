@@ -29,4 +29,7 @@ Model's Link followed throughtout the project : https://app.eraser.io/workspace/
 25. Create user from User schema (User.create) and send the response as return res.json(userCreated);
 26. In cloudinary.js in utils we added fs.unlink to delete file from temp after successfully getting uploaded as well as upon failing.
 27. Added generateToken , generateRefreshToken in user.model.js
-28.
+28. Making a Controller -> loginUser
+29. Designing a middleware for Controller -> logoutUser
+30. Making a auth.middleware.js
+31. Add route in user.route.js
