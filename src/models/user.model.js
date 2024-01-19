@@ -61,8 +61,11 @@ userSchema.pre("save", async function (next) {
 //Methods
 
 //Password validation method
-userSchema.methods.isPasswordCorrect = async (password) => {
-  return await bcrypt.compare(password, this.password); //password is password sent by user, this.password is encrypted
+userSchema.methods.isPasswordCorrect = async function(password){
+  console.log(`something went wrong `);
+  console.log(password,this.password)
+  return bcrypt.compare(password, this.password);
+  //password is password sent by user, this.password is encrypted
 };
 userSchema.methods.generateAccessToken = function () {
   return jwt.sign(

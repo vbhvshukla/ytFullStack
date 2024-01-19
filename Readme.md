@@ -33,3 +33,4 @@ Model's Link followed throughtout the project : https://app.eraser.io/workspace/
 29. Designing a middleware for Controller -> logoutUser
 30. Making a auth.middleware.js
 31. Add route in user.route.js
+32.

@@ -3,6 +3,8 @@ import { ApiError } from "../utils/ApiError.js";
 import { User } from "../models/user.model.js";
 import { uploadOnCloudinary } from "../utils/cloudnary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
+import jwt  from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
 //Generate access and refresh token both func in one func
 
@@ -38,9 +40,7 @@ const registerUser = asyncHandler(async (req, res) => {
         8) Check for user creation.
         9) Return response if user created else send null.
    */
-  console.log(req.body);
   const { fullName, email, username, password } = req.body; //Destructure the req
-  console.log(req.files);
   //Validation to check if any field is empty
   if (
     [fullName, email, username, password].some((field) => field?.trim() === "")
@@ -122,13 +122,15 @@ const loginUser = asyncHandler(async (req, res) => {
   send these tokens in cookies(secured) and send login successful
   */
   const { email, username, password } = req.body;
-  if (!username || !email) {
+  console.log(password);
+  if (!username && !email) {
     throw new ApiError(400, "Username or email is required!");
   }
   //Find first matching tuple query ($or)
   const user = await User.findOne({
     $or: [{ username }, { email }],
   });
+  console.log(user);
 
   if (!user) {
     throw new ApiError(404, "User does not exist!");
@@ -136,6 +138,9 @@ const loginUser = asyncHandler(async (req, res) => {
 
   //Check if password is correct(function defined in model)
   const isPasswordValid = await user.isPasswordCorrect(password);
+
+  //const isPasswordValid = await bcrypt.compare(password, user.password);
+
 
   if (!isPasswordValid) {
     throw new ApiError(401, "Invalid user credentials");
