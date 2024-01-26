@@ -33,4 +33,6 @@ Model's Link followed throughtout the project : https://app.eraser.io/workspace/
 29. Designing a middleware for Controller -> logoutUser
 30. Making a auth.middleware.js
 31. Add route in user.route.js
-32.
+32. Make an endpoint to refresh a user token so that frontend people can use it to reauthenticate a user if accesstoken is expired or user not logged in. (in user.controller.js refreshAccessToken Method).
+33. Added a refreshToken endpoint in user.routes.js
+
