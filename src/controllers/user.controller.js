@@ -25,7 +25,7 @@ const generateAccessAndRefreshTokens = async (userId) => {
   }
 };
 
-//Method : Register User , Login User, Logout User
+//Method : Register User , Login User, Logout User , RefreshAccessToken
 
 const registerUser = asyncHandler(async (req, res) => {
   //Steps to make this registerUser function
