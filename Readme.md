@@ -36,4 +36,4 @@ Model's Link followed throughtout the project : https://app.eraser.io/workspace/
 32. Make an endpoint to refresh a user token so that frontend people can use it to reauthenticate a user if accesstoken is expired or user not logged in. (in user.controller.js refreshAccessToken Method).
 33. Added a refreshToken endpoint in user.routes.js
 34. Made a subscription model
-
+35. Added some more user controllers like getCurrentUser, changeAccountDetails, changeCurrentPassword etc.

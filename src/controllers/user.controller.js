@@ -25,7 +25,7 @@ const generateAccessAndRefreshTokens = async (userId) => {
   }
 };
 
-//Method : Register User , Login User, Logout User , RefreshAccessToken
+//Method : Register User , Login User, Logout User , RefreshAccessToken etc
 
 const registerUser = asyncHandler(async (req, res) => {
   //Steps to make this registerUser function
@@ -263,4 +263,66 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
   }
 });
 
-export { registerUser, loginUser, logoutUser, refreshAccessToken };
+const changeCurrentPassword = asyncHandler(async (req, res) => {
+  const { oldPassword, newPassword } = req.body;
+
+  // if(!(newPassword === confPassword)){
+  //   throw new ApiError(400,"New Password Mismatch");
+  // }
+
+  //We'll need a user
+  const user = await User.findById(req.user?._id);
+  //We have a method to verify if old password is correct or not isPasswordCorrect in user.model.js
+  const isPasswordCorrect = await user.isPasswordCorrect(oldPassword);
+  //After we check the password is correct then only we'll update the new password
+  if (!isPasswordCorrect) {
+    throw new ApiError(400, "Invalid Old Password");
+  }
+  user.password = newPassword;
+  //We made a hook pre in user.model.js where the password will get hashed before getting saved.
+  await user.save({ validateBeforeSave: false });
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, {}, "Password changed successfully"));
+});
+
+const getCurrentUser = asyncHandler(async (req, res) => {
+  //As in auth middleware we already exported the user so we can fetch it here.
+  return res
+    .status(200)
+    .json(200, req.user, "Current user fetched successfully");
+});
+
+const updateAccountDetails = asyncHandler(async (req, res) => {
+  const { fullName, email } = req.body;
+  if (!fullName || !email) {
+    throw new ApiError(400, "All fields are required");
+  }
+  const user = User.findByIdAndUpdate(
+    req.user?._id,
+    {
+      $set: {
+        fullName: fullName,
+        email: email,
+      },
+    },
+    {
+      new: true,
+    }
+  ).select("-password"); //exclude password
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, user, "Account updated successfully"));
+});
+
+export {
+  registerUser,
+  loginUser,
+  logoutUser,
+  refreshAccessToken,
+  changeCurrentPassword,
+  getCurrentUser,
+  updateAccountDetails,
+};
