@@ -4,7 +4,6 @@ import { User } from "../models/user.model.js";
 import { uploadOnCloudinary } from "../utils/cloudnary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
 
 //Generate access and refresh token both func in one func
 
@@ -291,7 +290,7 @@ const getCurrentUser = asyncHandler(async (req, res) => {
   //As in auth middleware we already exported the user so we can fetch it here.
   return res
     .status(200)
-    .json(200, req.user, "Current user fetched successfully");
+    .json(new ApiResponse(200, req.user, "Current user fetched successfully"));
 });
 
 const updateAccountDetails = asyncHandler(async (req, res) => {
@@ -317,6 +316,91 @@ const updateAccountDetails = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, user, "Account updated successfully"));
 });
 
+const getUserChannelProfile = asyncHandler(async (req, res) => {
+  const { username } = req.params; //we'll get username from url so we use params
+  if (!username?.trim()) {
+    throw new ApiError(400, "Username not found!");
+  }
+  //We'll be writing aggregation pipeline to join different tables
+  //And after combining tables we get an array as a result.
+  //We are currently in users table and we'll be joining subscription table and we'll join it by lookup
+  //Getting subscribers
+  const channel = await User.aggregate([
+    {
+      $match: {
+        //We'll match by the username we extracted and the username in the DB we'll have this User table
+        username: username?.toLowerCase(),
+      },
+    },
+    {
+      $lookup: {
+        from: "subscriptions", //We'll use the model name in lower case and append an s (plural) this will
+        //be the name of the table.
+        localField: "_id",
+        foreignField: "channel", //The channel is also an id of user
+        as: "subscribers", //This will be the name of the field in the result.
+      },
+    },
+    //This is for number of channels subscribed
+    {
+      $lookup: {
+        from: "subscriptions",
+        localField: "_id",
+        foreignField: "subscriber",
+        as: "subscribedTo",
+      },
+    },
+    //Adding new fields in the User table subscribers Count and the susbscribed to count
+    {
+      $addFields: {
+        subscribersCount: {
+          $size: "$subscribers", //count the size of field subscribers
+        },
+        channelsSubscribedToCount: {
+          $size: "$subscribedTo",
+        },
+        //What are are doing here:-
+        /* 
+        We're making a field in which we'll be keeping a record
+        if a user is subscribed to a channel
+        if : req.user._id is in subscribers table's subscriber field 
+        then : isSubscribed would be true else false.
+        */
+        isSubscribed: {
+          $cond: {
+            if: { $in: [req.user?._id, "$subscribers.subscriber"] },
+            then: true,
+            else: false,
+          },
+        },
+      },
+    },
+    //Project gives projection of selected fields
+    {
+      $project: {
+        fullName: 1, //1 for project 0 for no
+        username: 1,
+        subscribersCount: 1,
+        channelsSubscribedToCount: 1,
+        isSubscribed: 1,
+        avatar: 1,
+        coverImage: 1,
+        email: 1,
+      },
+    },
+  ]);
+
+  if (!channel?.length) {
+    throw new ApiError(404, "Channel does not exist!");
+  }
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(200, channel[0], "User channel fetched successfully!")
+    );
+});
+
 export {
   registerUser,
   loginUser,
@@ -325,4 +409,5 @@ export {
   changeCurrentPassword,
   getCurrentUser,
   updateAccountDetails,
+  getUserChannelProfile
 };

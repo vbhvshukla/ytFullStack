@@ -37,3 +37,4 @@ Model's Link followed throughtout the project : https://app.eraser.io/workspace/
 33. Added a refreshToken endpoint in user.routes.js
 34. Made a subscription model
 35. Added some more user controllers like getCurrentUser, changeAccountDetails, changeCurrentPassword etc.
+36. Added in user controller , GetUserChannelProfile wrote aggregation pipelines.
