@@ -316,6 +316,8 @@ const updateAccountDetails = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, user, "Account updated successfully"));
 });
 
+//Mongo pipelines
+
 const getUserChannelProfile = asyncHandler(async (req, res) => {
   const { username } = req.params; //we'll get username from url so we use params
   if (!username?.trim()) {
@@ -401,6 +403,60 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
     );
 });
 
+//Watch history piplines
+
+const getWatchHistory = asyncHandler(async (req, res) => {
+  //Req.user._id gets you a string and we need to convert this id
+  const user = await User.aggregate([
+    {
+      $match: {
+        _id: new mongoose.Types.ObjectId(req.user._id), //This is converted to id
+      },
+    },
+    {
+      $lookup: {
+        from: "videos", //table name
+        localField: "watchHistory", //watchhistory id with id of videos
+        foreignField: "_id",
+        as: "watchHistory", //result name
+
+        //NESTED JOIN of watchHistory(we're in videos already)
+        //Refer readme point no.37/8
+        pipeline: [
+          {
+            $lookup: {
+              from: "users",
+              localField: "owner", //This of videos
+              foreignField: "_id", //This of users table again
+              as: "owner",
+              pipeline: [
+                //Only get these detail not whole users data.
+                {
+                  $project: {
+                    fullName: 1,
+                    username: 1,
+                    avatar: 1,
+                  },
+                },
+              ],
+            },
+          },
+          {
+            //After lookup we get an array so we extract first element.
+            //Optional
+            $addFields: {
+              owner: {
+                //Take the first element of the array returned so we can use owner.xyz in frontend.
+                $first: "$owner",
+              },
+            },
+          },
+        ],
+      },
+    },
+  ]);
+});
+
 export {
   registerUser,
   loginUser,
@@ -409,5 +465,6 @@ export {
   changeCurrentPassword,
   getCurrentUser,
   updateAccountDetails,
-  getUserChannelProfile
+  getUserChannelProfile,
+  getWatchHistory,
 };
