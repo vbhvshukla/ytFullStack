@@ -72,6 +72,7 @@ const registerUser = asyncHandler(async (req, res) => {
     Array.isArray(req.files.coverImage) &&
     req.files.coverImage.length > 0
   ) {
+    console.log(req.files)
     coverImageLocalPath = req.files.coverImage[0].path;
   }
 
@@ -185,8 +186,8 @@ const logoutUser = asyncHandler(async (req, res) => {
   await User.findByIdAndUpdate(
     req.user._id,
     {
-      $set: {
-        refreshToken: undefined,
+      $unset: {
+        refreshToken:1,
       },
     },
     {
