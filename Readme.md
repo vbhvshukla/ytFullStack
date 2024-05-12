@@ -41,3 +41,4 @@ Model's Link followed throughtout the project : https://app.eraser.io/workspace/
 37. (Nested Joins) We'll be creating the watchHistory backend for that we'll be required to join the table of users with videos
 so that we get the details like video name,views,etc but in videos field there is a field - owner which again will be required to show the channel name so we'll need to again rejoin the result we got from joining users and videos to users again to get the video's owner data. So we're going to perform nested lookup/join.
 38. In user.controller.js -> getWatchHistory()
+39. Added video controllers and video routes.
