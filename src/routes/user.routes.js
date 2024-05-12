@@ -37,7 +37,8 @@ router.route("/login").post(loginUser);
 
 router.route("/refresh-token").post(refreshAccessToken);
 
-router.route("/logout").post(verifyJWT, logoutUser); //we wrote next() in auth.middleware.js so we can use verifyJWT before executing logoutUser
+router.route("/logout").post(verifyJWT, logoutUser); 
+//we wrote next() in auth.middleware.js so we can use verifyJWT before executing logoutUser
 
 router.route("/change-password").post(verifyJWT, changeCurrentPassword);
 
