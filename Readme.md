@@ -42,3 +42,5 @@ Model's Link followed throughtout the project : https://app.eraser.io/workspace/
 so that we get the details like video name,views,etc but in videos field there is a field - owner which again will be required to show the channel name so we'll need to again rejoin the result we got from joining users and videos to users again to get the video's owner data. So we're going to perform nested lookup/join.
 38. In user.controller.js -> getWatchHistory()
 39. Added video controllers and video routes.
+40. Added subscription controllers and its routes.
+41. Added playlist controllers and its routes.
