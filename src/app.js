@@ -46,8 +46,9 @@ import userRouter from "./routes/user.routes.js";
 import videoRouter from "./routes/video.routes.js"
 import subscriptionRouter from "./routes/subscription.routes.js";
 import playlistRouter from "./routes/playlist.routes.js";
+import commentRouter from "./routes/comment.routes.js";
 // Routes Declaration
-// app.use("/users",userRouter) usual practice below is the industry standard.
+
 app.use("/api/v1/users", userRouter); //passing the control to the user.route.js
 
 app.use("/api/v1/video", videoRouter);
@@ -56,5 +57,6 @@ app.use("/api/v1/subscription", subscriptionRouter);
 
 app.use("/api/v1/playlist", playlistRouter);
 
+app.use("/api/v1/comment",commentRouter);
 
 export { app };
