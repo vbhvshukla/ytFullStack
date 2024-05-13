@@ -42,7 +42,7 @@ const getAllVideoComments = asyncHandler(async (req, res) => {
 
   const comments = await Comment.aggregate([
     {
-      $match: { video: new mongoose.Types.ObjectId(`${videoId}`) },
+      $match: { video: new mongoose.Types.ObjectId(videoId) },
     },
     {
       $lookup: {
