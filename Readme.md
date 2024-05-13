@@ -44,3 +44,5 @@ so that we get the details like video name,views,etc but in videos field there i
 39. Added video controllers and video routes.
 40. Added subscription controllers and its routes.
 41. Added playlist controllers and its routes.
+42. Added Tweet Controllers and its routes.
+43. Added Like controllers and its routes.
