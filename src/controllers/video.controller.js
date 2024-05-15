@@ -107,6 +107,7 @@ const publishAVideo = asyncHandler(async (req, res) => {
     duration: videoFile.duration,
     isPublished: isPublished,
     owner: req.user,
+    views:0
   });
 
   if (!video) {
