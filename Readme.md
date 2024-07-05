@@ -18,7 +18,7 @@ Clone the repository:
 
 bash
 Copy code
-git clone [https://github.com/your-username/repository-name.git](https://github.com/vbhvshukla/ytFullStack.git)
+git clone [https://github.com/vbhvshukla/ytFullStack.git]
 Install dependencies:
 
 bash
